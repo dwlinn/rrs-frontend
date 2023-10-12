@@ -22,21 +22,6 @@ const AreaManage = () => {
       title: '司机姓名',
       key: 'driverName',
       dataIndex: 'driverName',
-      render: (_, { driverName }) => (
-        <>
-          {driverName.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
     },
     {
       title: '计划入园时间',
@@ -68,18 +53,18 @@ const AreaManage = () => {
   const columns2 = [
     {
       title: '订单号',
-      dataIndex: 'orderNumber',
-      key: 'orderNumber',
+      dataIndex: 'orderNo',
+      key: 'orderNo',
     },
     {
       title: '车牌号',
-      dataIndex: 'carNumber',
-      key: 'carNumber',
+      dataIndex: 'carNo',
+      key: 'carNo',
     },
     {
       title: '司机姓名',
-      key: 'driverName',
       dataIndex: 'driverName',
+      key: 'driverName',
     },
     {
       title: '计划到达月台时间',
@@ -173,7 +158,7 @@ const AreaManage = () => {
       orderNo: 'RRS23092200001',
       carNo: '皖AB0710',
       address: 'New York No. 1 Lake Park',
-      driverName: ['nice', 'developer'],
+      driverName: 'developer',
       inTime: '9月22日8:40',
       operateTime: '9月22日9:15',
       outTime: '9月22日9:20',
@@ -184,7 +169,7 @@ const AreaManage = () => {
       orderNo: 'RRS23092200002',
       carNo: '皖AB0710',
       address: 'London No. 1 Lake Park',
-      driverName: ['loser'],
+      driverName: 'developer',
       inTime: '9月22日8:50',
       operateTime: '9月22日9:25',
       outTime: '9月22日9:30',
@@ -195,7 +180,7 @@ const AreaManage = () => {
       orderNo: 'RRS23092200003',
       carNo: '皖AB0710',
       address: 'Sydney No. 1 Lake Park',
-      driverName: ['cool', 'teacher'],
+      driverName: 'developer',
       inTime: '9月22日9:00',
       operateTime: '9月22日9:35',
       outTime: '9月22日9:40',
