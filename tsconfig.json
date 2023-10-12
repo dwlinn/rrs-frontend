@@ -19,5 +19,11 @@
       "@@test/*": ["./src/.umi-test/*"]
     }
   },
-  "include": ["./**/*.d.ts", "./**/*.ts", "./**/*.tsx"]
+  "include": [
+    "./**/*.d.ts",
+    "./**/*.ts",
+    "./**/*.tsx",
+    "src/pages/AreaManage/index.jsx",
+    "src/pages/AreaManage/TableList.jsx"
+  ]
 }
