@@ -1,225 +1,111 @@
+import { CameraOutlined, CarOutlined, PhoneOutLined, UserOutlined } from '@ant-design/icons';
 import { PageContainer, ProCard } from '@ant-design/pro-components';
-import { Input, Space, Tag } from 'antd';
+import { Button, Card, Col, Form, Input, Modal, Row, Select, Space } from 'antd';
+import { useState } from 'react';
+import './index.less';
+import { columns1, columns2, columns3, data1, data2, data3, modalFormData } from './listConfig';
 import TableList from './TableList';
 
 const AreaManage = () => {
   const { Search } = Input;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentRow, setCurrentRow] = useState(null);
 
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
+  const showModal = (row) => {
+    setIsModalOpen(true);
+    setCurrentRow(row);
+  };
 
-  const columns1 = [
-    {
-      title: '订单号',
-      dataIndex: 'orderNo',
-      key: 'orderNo',
-    },
-    {
-      title: '车牌号',
-      dataIndex: 'carNo',
-      key: 'carNo',
-    },
-    {
-      title: '司机姓名',
-      key: 'driverName',
-      dataIndex: 'driverName',
-    },
-    {
-      title: '计划入园时间',
-      dataIndex: 'inTime',
-      key: 'inTime',
-    },
-    {
-      title: '计划出园时间',
-      dataIndex: 'outTime',
-      key: 'outTime',
-    },
-    {
-      title: '车辆实时位置',
-      dataIndex: 'location',
-      key: 'location',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <a>复制</a>
-          <a>删除</a>
-        </Space>
-      ),
-    },
-  ];
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
 
-  const columns2 = [
-    {
-      title: '订单号',
-      dataIndex: 'orderNo',
-      key: 'orderNo',
-    },
-    {
-      title: '车牌号',
-      dataIndex: 'carNo',
-      key: 'carNo',
-    },
-    {
-      title: '司机姓名',
-      dataIndex: 'driverName',
-      key: 'driverName',
-    },
-    {
-      title: '计划到达月台时间',
-      dataIndex: 'inTime',
-      key: 'inTime',
-    },
-    {
-      title: '计划装卸时间',
-      dataIndex: 'operateTime',
-      key: 'operateTime',
-    },
-    {
-      title: '计划离开月台时间',
-      dataIndex: 'outTime',
-      key: 'outTime',
-    },
-    {
-      title: '车辆实时位置',
-      dataIndex: 'location',
-      key: 'location',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <a>复制</a>
-          <a>删除</a>
-        </Space>
-      ),
-    },
-  ];
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
-  const columns3 = [
-    {
-      title: '仓库编号',
-      dataIndex: 'wareHouseNo',
-      key: 'wareHouseNo',
-    },
-    {
-      title: '月台编号',
-      dataIndex: 'terraceNo',
-      key: 'terraceNo',
-    },
-    {
-      title: '机器人编号',
-      key: 'robotNo',
-      dataIndex: 'robotNo',
-    },
-    {
-      title: '机器人状态',
-      dataIndex: 'robotStatus',
-      key: 'robotStatus',
-      render: (_, { robotStatus }) => {
-        let color = 'geekblue';
-        if (robotStatus === '异常') {
-          color = 'volcano';
-        } else if (robotStatus === '搬运中') {
-          color = 'geekblue';
-        } else {
-          color = 'green';
-        }
-        return (
-          <Tag color={color} key={robotStatus}>
-            {' '}
-            {robotStatus}
-          </Tag>
+  const onSearch = (value, _e, info) => {};
+
+  const terraceColum = columns3.map((item) => {
+    if (item.key === 'cctv')
+      return {
+        ...item,
+        render: (_, record) => <CameraOutlined onClick={() => showModal(record)} />,
+      };
+    return item;
+  });
+
+  const handleFooterSelectChange = (value) => {};
+
+  const ModalFooter = () => {
+    return (
+      <Select
+        defaultValue="联系司机"
+        onChange={handleFooterSelectChange}
+        options={[
+          { value: '在线联系', label: '在线联系' },
+          { value: '电话联系', label: '电话联系' },
+          { value: '短信联系', label: '短信联系' },
+        ]}
+      />
+    );
+  };
+
+  const renderLabel = (key) => {
+    let labelNode = <div>{key}</div>;
+    switch (key) {
+      case '车牌号':
+        labelNode = (
+          <div>
+            <CarOutlined />
+            车牌号
+          </div>
         );
-      },
-    },
-    {
-      title: '任务内容',
-      dataIndex: 'orderNo',
-      key: 'orderNo',
-    },
-    {
-      title: '任务进度',
-      dataIndex: 'orderProgress',
-      key: 'orderProgress',
-    },
-    {
-      title: '查看监控',
-      dataIndex: 'cctv',
-      key: 'cctv',
-    },
-  ];
+        break;
+      case '司机姓名':
+        labelNode = (
+          <div>
+            <UserOutlined />
+            司机姓名
+          </div>
+        );
+        break;
+      case '联系电话':
+        labelNode = (
+          <div>
+            <PhoneOutLined />
+            联系电话
+          </div>
+        );
+        break;
+      default:
+        break;
+    }
+    return labelNode;
+  };
 
-  const data = [
-    {
-      key: '1',
-      orderNo: 'RRS23092200001',
-      carNo: '皖AB0710',
-      address: 'New York No. 1 Lake Park',
-      driverName: 'developer',
-      inTime: '9月22日8:40',
-      operateTime: '9月22日9:15',
-      outTime: '9月22日9:20',
-      location: 'W14-八达通库',
-    },
-    {
-      key: '2',
-      orderNo: 'RRS23092200002',
-      carNo: '皖AB0710',
-      address: 'London No. 1 Lake Park',
-      driverName: 'developer',
-      inTime: '9月22日8:50',
-      operateTime: '9月22日9:25',
-      outTime: '9月22日9:30',
-      location: 'W14-八达通库',
-    },
-    {
-      key: '3',
-      orderNo: 'RRS23092200003',
-      carNo: '皖AB0710',
-      address: 'Sydney No. 1 Lake Park',
-      driverName: 'developer',
-      inTime: '9月22日9:00',
-      operateTime: '9月22日9:35',
-      outTime: '9月22日9:40',
-      location: 'G19-武汉冷柜仓',
-    },
-  ];
-
-  const data3 = [
-    {
-      key: '1',
-      wareHouseNo: 'K1',
-      terraceNo: 'K102',
-      robotNo: 'R202324',
-      robotStatus: '搬运中',
-      orderNo: 'RRS2023092200001',
-      orderProgress: '60%',
-      cctv: '',
-    },
-    {
-      key: '2',
-      wareHouseNo: 'K1',
-      terraceNo: 'K103',
-      robotNo: 'R202324',
-      robotStatus: '休息中',
-      orderNo: 'RRS2023092200002',
-      orderProgress: '100%',
-      cctv: '',
-    },
-    {
-      key: '3',
-      wareHouseNo: 'K3',
-      terraceNo: 'K106',
-      robotNo: 'R202324',
-      robotStatus: '异常',
-      orderNo: 'RRS2023092200003',
-      orderProgress: '机械臂损坏',
-      cctv: '',
-    },
-  ];
+  const getModalFormFields = () => {
+    const children = [];
+    for (let key in modalFormData) {
+      if (modalFormData.hasOwnProperty(key)) {
+        children.push(
+          <Col
+            span={8}
+            key={key}
+            className={key === '车牌号' ? 'areaManage-modalForm-cardItem' : ''}
+          >
+            <Form.Item
+              label={key}
+              // label={renderLabel(key)}
+            >
+              {modalFormData[key]}
+            </Form.Item>
+          </Col>,
+        );
+      }
+    }
+    return children;
+  };
 
   return (
     <PageContainer
@@ -234,9 +120,9 @@ const AreaManage = () => {
         />,
       ]}
     >
-      <TableList rowKey="key" headerTitle="园区车辆监控" columns={columns1} data={data} />
+      <TableList rowKey="key" headerTitle="园区车辆监控" columns={columns1} data={data1} />
       <Space />
-      <TableList rowKey="key" headerTitle="月台车辆监控" columns={columns2} data={data} />
+      <TableList rowKey="key" headerTitle="月台车辆监控" columns={columns2} data={data2} />
       <ProCard title="园区监控总览" bordered headerBordered gutter={16}>
         内部卡片内容
         {/* <ProCard title="内部卡片标题" type="inner" bordered>
@@ -246,7 +132,27 @@ const AreaManage = () => {
           内部卡片内容
         </ProCard> */}
       </ProCard>
-      <TableList rowKey="key" headerTitle="装卸搬运机器人监测" columns={columns3} data={data3} />
+      <TableList
+        rowKey="key"
+        headerTitle="装卸搬运机器人监测"
+        columns={terraceColum}
+        data={data3}
+      />
+
+      <Modal
+        width={800}
+        title={'月台' + currentRow?.terraceNo}
+        footer={ModalFooter}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Card title="车辆信息" extra={<Button danger>异常上报</Button>} style={{ width: '100%' }}>
+          <Form>
+            <Row gutter={24}>{getModalFormFields()}</Row>
+          </Form>
+        </Card>
+      </Modal>
     </PageContainer>
   );
 };
