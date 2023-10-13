@@ -1,4 +1,4 @@
-import { CameraOutlined, CarOutlined, PhoneOutLined, UserOutlined } from '@ant-design/icons';
+import { CameraOutlined, CarOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { PageContainer, ProCard } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, Modal, Row, Select, Space } from 'antd';
 import { useState } from 'react';
@@ -56,26 +56,26 @@ const AreaManage = () => {
     switch (key) {
       case '车牌号':
         labelNode = (
-          <div>
+          <>
             <CarOutlined />
-            车牌号
-          </div>
+            &nbsp;车牌号
+          </>
         );
         break;
       case '司机姓名':
         labelNode = (
-          <div>
+          <>
             <UserOutlined />
-            司机姓名
-          </div>
+            &nbsp;司机姓名
+          </>
         );
         break;
       case '联系电话':
         labelNode = (
-          <div>
-            <PhoneOutLined />
-            联系电话
-          </div>
+          <>
+            <PhoneOutlined />
+            &nbsp;联系电话
+          </>
         );
         break;
       default:
@@ -94,12 +94,7 @@ const AreaManage = () => {
             key={key}
             className={key === '车牌号' ? 'areaManage-modalForm-cardItem' : ''}
           >
-            <Form.Item
-              label={key}
-              // label={renderLabel(key)}
-            >
-              {modalFormData[key]}
-            </Form.Item>
+            <Form.Item label={renderLabel(key)}>{modalFormData[key]}</Form.Item>
           </Col>,
         );
       }
